@@ -31,5 +31,15 @@ clean:
 	@echo "[*] Cleaning up backup or swap files..."
 	find . -name '*~' -o -name '*.swp' -o -name '*.swo' -o -name '*.bak' -delete
 
+## ---------- Help Info ----------
+help:
+	@echo "Available targets:"
+	@echo "  make setup      - Run bootstrap (core CLI)"
+	@echo "  make dev        - Install developer tools (nvim, LSPs, etc.)"
+	@echo "  make desktop    - Setup GUI (i3, ly, fonts)"
+	@echo "  make all        - Run everything (full setup)"
+	@echo "  make clean      - Remove temp/swap files"
+
+
 .PHONY: setup dev desktop all fonts ly clean
 # .PHONY: Prevents make from getting confused by files named the same as the targets

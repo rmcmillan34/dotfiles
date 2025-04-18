@@ -1,0 +1,6 @@
+```bash
+./bootstrap.sh        # for core tools
+./devtools.sh         # for developer tools
+./desktop.sh          # for GUI environment
+```
+
