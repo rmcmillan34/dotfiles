@@ -1,0 +1,35 @@
+# Makefile — Dotfiles Task Runner
+
+# Run this with: `make <target>`
+
+## ---------- General Setup ----------
+setup:
+	@echo "[*] Running bootstrap (core CLI setup)..."
+	./bootstrap.sh
+
+dev:
+	@echo "[*] Installing developer tools (Neovim, LSPs, Copilot)..."
+	./devtools.sh
+
+desktop:
+	@echo "[*] Configuring desktop environment (i3, picom, rofi, ly)..."
+	./desktop.sh
+
+all: setup dev desktop
+
+## ---------- Optional Helpers ----------
+fonts:
+	@echo "[*] Installing Nerd Fonts..."
+	bash scripts/install-fonts.sh
+
+ly:
+	@echo "[*] Installing LY Display Manager..."
+	sudo bash scripts/install-ly.sh
+
+## ---------- Maintenance ----------
+clean:
+	@echo "[*] Cleaning up backup or swap files..."
+	find . -name '*~' -o -name '*.swp' -o -name '*.swo' -o -name '*.bak' -delete
+
+.PHONY: setup dev desktop all fonts ly clean
+# .PHONY: Prevents make from getting confused by files named the same as the targets

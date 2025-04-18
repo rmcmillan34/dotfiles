@@ -1,0 +1,82 @@
+# ------------------------------------------------------------------------------
+# Core Ignored Files
+# ------------------------------------------------------------------------------
+
+# Backup and swap files (vim/nvim/emacs)
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+*.old
+*~
+
+# macOS & Windows clutter
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs and debug output
+*.log
+*.out
+
+# Python junk
+__pycache__/
+*.pyc
+*.pyo
+
+# Node junk (if any js tools are added)
+node_modules/
+
+# Compiled binaries or archives
+*.o
+*.so
+*.a
+*.class
+*.tar
+*.gz
+*.zip
+
+# ------------------------------------------------------------------------------
+# Security / Secrets (DO NOT TRACK)
+# ------------------------------------------------------------------------------
+
+.env
+.env.*
+*.secret
+*.key
+*.pem
+*.cert
+
+# Copilot CLI and API keys
+~/.config/github-copilot/
+~/.config/openai/
+~/.netrc
+
+# ------------------------------------------------------------------------------
+# Dotfiles-specific
+# ------------------------------------------------------------------------------
+
+# Local machine overrides (if you make host-specific branches)
+local.*
+custom.*
+
+# Optional ignore for font files or heavy media
+*.ttf
+*.otf
+*.mp4
+*.jpg
+*.png
+
+# ------------------------------------------------------------------------------
+# Other
+# ------------------------------------------------------------------------------
+
+# Systemd/user junk (if experimenting with services)
+*.service
+*.socket
+
+# Temporary install traces
+install.log
