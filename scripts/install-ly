@@ -1,0 +1,13 @@
+# scripts/install-ly.sh — ly display manager installer
+#!/usr/bin/env bash
+set -euxo pipefail
+
+# Debian/Ubuntu
+sudo apt-get update -qq
+sudo apt-get install -yq ly
+
+# Enable and set default display manager
+sudo systemctl enable ly.service
+sudo systemctl set-default graphical.target
+
+echo "[✓] ly installed and enabled."
