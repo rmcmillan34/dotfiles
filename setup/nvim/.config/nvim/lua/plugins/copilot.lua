@@ -1,20 +1,35 @@
--- ~/.config/nvim/lua/plugins/copilot.lua
+-- in your ~/.config/nvim/lua/plugins/copilot.lua
 return {
-  "github/copilot.vim",
-  event = "VimEnter",  -- lazy-load when you first enter Insert mode
-  config = function()
-    -- disable default Tab mapping (if you prefer)
-    vim.g.copilot_no_tab_map = true
-    
-    -- map <C-J> (or whatever) to accept suggestions:
-    vim.api.nvim_set_keymap(
-      "i",
-      "<C-Space>",
-      'copilot#Accept("<CR>")',
-      { expr = true, silent = true }
-    )
+  {
+    "github/copilot.vim",
+    event = "VimEnter",
+    config = function()
+      vim.g.copilot_no_tab_map = true
+      vim.g.copilot_enabled = true
 
-    -- optional: show a small float window with suggestions
-    vim.g.copilot_filetypes = { ["*"] = true }
-  end,
+      -- simpler Tab‐or‐accept mapping using a VimL expression
+      vim.keymap.set("i", "<Tab>",
+        -- if copilot#Accept() returns non‐empty, use that, otherwise send a real <Tab>
+        'copilot#Accept() != "" ? copilot#Accept() : "\\<Tab>"',
+        { expr = true, silent = true }
+      )
+
+      -- toggle command & mapping
+      vim.api.nvim_create_user_command("CopilotToggle", function()
+        if vim.g.copilot_enabled then
+          vim.fn["copilot#Disable"]()
+          vim.g.copilot_enabled = false
+          print("🛑 Copilot disabled")
+        else
+          vim.fn["copilot#Enable"]()
+          vim.g.copilot_enabled = true
+          print("✅ Copilot enabled")
+        end
+      end, {})
+
+      vim.keymap.set("n", "<leader>ct", "<cmd>CopilotToggle<CR>",
+        { desc = "Toggle GitHub Copilot", silent = true })
+    end,
+  },
 }
+
