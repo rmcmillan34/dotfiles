@@ -84,20 +84,7 @@ require("lazy").setup({
     end,
   },
 
-  -- nvim-tree config
-  {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-        require("nvim-tree").setup({
-        view = { width = 30 },
-        update_focused_file = { enable = true },
-        git = { enable = false },
-        })
-    end,
-    },
-
+  { import = "plugins.nvim-tree" },
   { import = "plugins.copilot" },
-
   { import = "plugins.lazygit" }
 })
