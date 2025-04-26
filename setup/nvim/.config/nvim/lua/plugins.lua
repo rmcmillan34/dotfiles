@@ -45,7 +45,7 @@ require("lazy").setup({
     end,                             -- close config = function() …
   },                                 -- close the catppuccin spec table
 
--- Fuzzy finder
+  -- Fuzzy finder
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 
   -- Git signs
@@ -86,5 +86,9 @@ require("lazy").setup({
 
   { import = "plugins.nvim-tree" },
   { import = "plugins.copilot" },
-  { import = "plugins.lazygit" }
+  { import = "plugins.lazygit" },
+  { import = "plugins.nvim-treesitter" },
+  { import = "plugins.nvim-markdown-preview" },
+  { import = "plugins.glow" }
+
 })
