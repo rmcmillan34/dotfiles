@@ -20,6 +20,10 @@ stow --dir=setup --target="$HOME" git
 stow --dir=setup --target="$HOME" starship
 
 # Set zsh as default shell if not already
-#if [[ "$SHELL" != *"zsh" ]]; then
-#  chsh -s "$(command -v zsh)"
-#fi
+if [[ "$SHELL" != *"zsh" ]]; then
+  chsh -s "$(command -v zsh)"
+fi
+
+# Install Neovim Co-Pilot package
+git clone https://github.com/github/copilot.vim.git \
+  ~/.config/nvim/pack/github/start/copilot.vim

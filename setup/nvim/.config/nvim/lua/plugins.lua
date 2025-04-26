@@ -16,23 +16,36 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- Colorscheme
   {
-    "LunarVim/synthwave84.nvim",
-    lazy    = false,     -- load immediately
-    priority= 1000,      -- load before other colorschemes
-    config  = function()
-      require("synthwave84").setup({
-        -- optional tweaks:
-        glow = {
-          error_msg = true,
-          keyword   = true,
-          operator  = true
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,  -- load before other colorschemes
+    config = function()
+      require("catppuccin").setup({
+        flavour = "mocha",              -- latte, frappe, macchiato, mocha
+        transparent_background = true,
+        term_colors = true,
+        styles = {
+          comments = { "italic" },
+          functions = { "bold" },
         },
-      })
-      vim.cmd("colorscheme synthwave84")
-    end,
-  },
+        integrations = {
+          treesitter = true,
+          native_lsp = { enabled = true },
+          cmp = true,
+          telescope = true,
+          notify = true,
+        },
+      })                            -- close require("catppuccin").setup(
+        -- clear highlights so terminal transparency shows through
+      vim.cmd("colorscheme catppuccin")
+      vim.cmd([[highlight Normal       guibg=NONE ctermbg=NONE]])
+      vim.cmd([[highlight NormalNC     guibg=NONE ctermbg=NONE]])
+      vim.cmd([[highlight FloatBorder  guibg=NONE ctermbg=NONE]])
+      vim.cmd([[highlight NormalFloat  guibg=NONE ctermbg=NONE]])
+    end,                             -- close config = function() …
+  },                                 -- close the catppuccin spec table
 
-  -- Fuzzy finder
+-- Fuzzy finder
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 
   -- Git signs
@@ -48,6 +61,7 @@ require("lazy").setup({
   {
     "williamboman/mason.nvim",
     cmd = "Mason",
+    event = "VimEnter",
     lazy = true,   -- lazy load on command
     priority = 1000, -- load before other plugins
     config = function()
@@ -62,13 +76,13 @@ require("lazy").setup({
   {
     "williamboman/mason-lspconfig.nvim",
     -- Ensure that this plugin is loaded after mason.nvim
-    cmd = "Mason",
+    cmd = "MasonLSPConfig",
     dependencies = { "mason.nvim" },
     lazy = true, -- lazy load on command
     config = function()
 
     end,
-},
+  },
 
   -- nvim-tree config
   {
@@ -81,5 +95,9 @@ require("lazy").setup({
         git = { enable = false },
         })
     end,
-    }
+    },
+
+  { import = "plugins.copilot" },
+
+  { import = "plugins.lazygit" }
 })
