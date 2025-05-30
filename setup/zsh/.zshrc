@@ -160,6 +160,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#
+alias repo="cd ~/Code"
+alias dots="cd ~/Code/dotfiles"
+alias vault="cd ~/Code/obsidian-vault"
 
 echo $BANNER
