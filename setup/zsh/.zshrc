@@ -163,5 +163,8 @@ source $ZSH/oh-my-zsh.sh
 alias repo="cd ~/Code"
 alias dots="cd ~/Code/dotfiles"
 alias vault="cd ~/Code/obsidian-vault"
+alias vim="nvim"
+alias lg="lazygit"
 
+tmux
 echo $BANNER
