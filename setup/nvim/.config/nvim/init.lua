@@ -11,9 +11,9 @@ else
   vim.g.mapleader = " "         -- or e.g. vim.g.mapleader = ";"
 end
 
+require("core.options")
+require("core.keymaps")
+require("core.autocmds")
 
-
-require("options") -- Basic editor settings
-require("plugins") -- Plugin manager and plugins
-require("keymaps") -- Key mappings
-require("mason-setup") -- Mason and LSP setup
+require("plugins")        -- Lazy bootstrap + specs
+require("config.theme")   -- one place for theme
