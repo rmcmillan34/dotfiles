@@ -17,6 +17,9 @@ require("lazy").setup({
   { import = "plugins.format" },
   { import = "plugins.markdown" },
   { import = "plugins.latex" },
+  { import = "plugins.copilot" },
+  { import = "plugins.completion" },
+  { import = "plugins.telescope" },
 }, {
   ui = { border = "rounded" },
   change_detection = { notify = false },

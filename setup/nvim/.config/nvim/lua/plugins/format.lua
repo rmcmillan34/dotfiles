@@ -6,11 +6,12 @@ return {
     },
     opts = {
       formatters_by_ft = {
-        python = { "ruff_format", "black" }, -- you can choose one later
-        cpp = { "clang-format" },
-        c = { "clang-format" },
-        lua = { "stylua" },
-        markdown = { "prettier" }, -- optional
+        python = { "ruff_format" },      -- OR { "black" }
+        cpp    = { "clang_format" },
+        c      = { "clang_format" },
+        tex    = { "latexindent" },
+        markdown = { "prettier" },
+        lua    = { "stylua" },
       },
     },
   },
