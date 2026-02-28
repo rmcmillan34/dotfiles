@@ -1,5 +1,5 @@
 -- lua/plugins/lsp.lua
--- Lazy.nvim plugin spec for LSP stack. This is the only place that should call require("lsp").setup().
+-- Only entry point for LSP setup: call require("lsp").setup() here.
 
 return {
   {
@@ -21,4 +21,3 @@ return {
     end,
   },
 }
-
