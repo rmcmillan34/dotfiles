@@ -5,9 +5,6 @@ return {
     priority = 1000,
   },
 
-  -- Optional: Telescope (keep if you use it)
-  { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-
   -- Optional: nvim-tree (or replace with oil.nvim later)
   {
     "nvim-tree/nvim-tree.lua",
