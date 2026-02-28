@@ -1,25 +1,28 @@
 { config, pkgs, ... }:
 
 {
-  # --- Identity / basics ---
   home.username = "ryan";
   home.homeDirectory = "/home/ryan";
   home.stateVersion = "25.11";
 
-  # --- Packages (Neovim + plugins + tooling deps) ---
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
+
+  # --- Packages (Neovim + plugin deps) ---
   home.packages = with pkgs; [
-    # Core utilities commonly needed by plugin installers / tools
+    # Core utils
     git
     curl
     unzip
     gnutar
     gzip
 
-    # Telescope: file finding + grep
+    # Telescope
     ripgrep
     fd
 
-    # Native builds (telescope-fzf-native, treesitter parsers, etc.)
+    # Native builds (telescope-fzf-native, treesitter parsers)
     gnumake
     clang
     pkg-config
@@ -27,53 +30,39 @@
     # Copilot.vim dependency
     nodejs
 
-    # Git TUI (you use lazygit.nvim)
+    # Git TUI (lazygit.nvim)
     lazygit
 
-    # Markdown preview (you use glow.nvim)
+    # Markdown preview (glow.nvim)
     glow
 
-    # Formatters you referenced in conform config
+    # Formatters referenced in your Conform config
     ruff
     black
-    clang-tools   # clang-format (and clangd if you ever want it system-side)
+    clang-tools
     stylua
     nodePackages.prettier
 
-    # LaTeX toolchain (vimtex / texlab helpers: latexmk, latexindent, etc.)
+    # LaTeX toolchain (latexmk/latexindent etc)
     texlive.combined.scheme-medium
 
-    # Viewer helpers (vimtex uses xdg-open fallback; zathura is nice if you use it)
+    # Viewer helpers
     xdg-utils
     zathura
   ];
-
-  # --- Dotfiles (optional; keep empty if you're using stow for everything) ---
-  home.file = {
-    # Example:
-    # ".config/nvim".source = /path/to/your/nvim;
-  };
-
-  # --- Session variables ---
-  home.sessionVariables = {
-    EDITOR = "nvim";
-  };
 
   # --- Git ---
   programs.git = {
     enable = true;
     userName = "Ryan McMillan";
     userEmail = "ryan.j.mcmillan34@gmail.com";
-
     extraConfig = {
       init.defaultBranch = "main";
     };
   };
 
   # --- GitHub CLI ---
-  programs.gh = {
-    enable = true;
-  };
+  programs.gh.enable = true;
 
   # --- Zsh / Oh-My-Zsh ---
   programs.zsh = {
@@ -89,12 +78,14 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
+    # IMPORTANT: Nix interpolates ${...} inside this string.
+    # Use ''${...} to pass ${...} through to zsh.
     initContent = ''
-      # Avoid "user@host" in prompt for DEFAULT_USER
+      # Avoid "user@host" prompt bit for the default user
       DEFAULT_USER="$USER"
       RPROMPT=""
 
-      # Optional: customize agnoster-ish prompt functions
+      # Optional: customize prompt segments (agnoster-style)
       prompt_dir() {
         prompt_segment blue $CURRENT_FG '%2~'
       }
@@ -102,13 +93,14 @@
       prompt_git() {
         local branch
         branch=$(git symbolic-ref --short HEAD 2>/dev/null) || return
-        prompt_segment green $CURRENT_FG " ${branch}"
+        # NOTE: ''${branch} is required so Nix doesn't try to substitute it.
+        prompt_segment green $CURRENT_FG " ''${branch}"
       }
 
+      # Add a newline before prompt (optional)
       PROMPT=$'\n'"$PROMPT"
     '';
   };
 
-  # Let Home Manager manage itself
   programs.home-manager.enable = true;
 }
