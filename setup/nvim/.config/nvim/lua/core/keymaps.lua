@@ -1,4 +1,3 @@
-local map = vim.keymap.set
-vim.keymap.set("n","gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-vim.keymap.set("n","K",  "<cmd>lua vim.lsp.buf.hover()<CR>")
-
+-- Global/editor-agnostic keymaps only.
+-- LSP keymaps belong in lua/lsp.lua (on_attach).
+-- Telescope keymaps belong in lua/plugins/telescope.lua.
