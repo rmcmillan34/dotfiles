@@ -1,124 +1,114 @@
 { config, pkgs, ... }:
 
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
+  # --- Identity / basics ---
   home.username = "ryan";
   home.homeDirectory = "/home/ryan";
+  home.stateVersion = "25.11";
 
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "25.11"; # Please read the comment before changing.
+  # --- Packages (Neovim + plugins + tooling deps) ---
+  home.packages = with pkgs; [
+    # Core utilities commonly needed by plugin installers / tools
+    git
+    curl
+    unzip
+    gnutar
+    gzip
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
+    # Telescope: file finding + grep
+    ripgrep
+    fd
 
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    # Native builds (telescope-fzf-native, treesitter parsers, etc.)
+    gnumake
+    clang
+    pkg-config
 
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+    # Copilot.vim dependency
+    nodejs
+
+    # Git TUI (you use lazygit.nvim)
+    lazygit
+
+    # Markdown preview (you use glow.nvim)
+    glow
+
+    # Formatters you referenced in conform config
+    ruff
+    black
+    clang-tools   # clang-format (and clangd if you ever want it system-side)
+    stylua
+    nodePackages.prettier
+
+    # LaTeX toolchain (vimtex / texlab helpers: latexmk, latexindent, etc.)
+    texlive.combined.scheme-medium
+
+    # Viewer helpers (vimtex uses xdg-open fallback; zathura is nice if you use it)
+    xdg-utils
+    zathura
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
+  # --- Dotfiles (optional; keep empty if you're using stow for everything) ---
   home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
+    # Example:
+    # ".config/nvim".source = /path/to/your/nvim;
   };
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/ryan/etc/profile.d/hm-session-vars.sh
-  #
+  # --- Session variables ---
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "nvim";
   };
-  
-  # === GIT Config ===
+
+  # --- Git ---
   programs.git = {
     enable = true;
-    settings = {
-      user = {
-        name = "Ryan McMillan";
-        email = "ryan.j.mcmillan34@gmail.com";
-      };
-    init.deffaultBranch = "main";
+    userName = "Ryan McMillan";
+    userEmail = "ryan.j.mcmillan34@gmail.com";
+
+    extraConfig = {
+      init.defaultBranch = "main";
     };
   };
-  
+
+  # --- GitHub CLI ---
   programs.gh = {
     enable = true;
   };
-  # === TERMINAL MANAGEMENT ===
+
+  # --- Zsh / Oh-My-Zsh ---
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
 
     oh-my-zsh = {
       enable = true;
       theme = "agnoster";
-      plugins = ["git" "sudo" "z"];
+      plugins = [ "git" "sudo" "z" ];
     };
 
-    enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
     initContent = ''
+      # Avoid "user@host" in prompt for DEFAULT_USER
       DEFAULT_USER="$USER"
       RPROMPT=""
 
+      # Optional: customize agnoster-ish prompt functions
       prompt_dir() {
         prompt_segment blue $CURRENT_FG '%2~'
       }
 
       prompt_git() {
         local branch
-        branch=$(git symbolic-ref --short HEAD 2>/dev/null) || return 
-        prompt_segment green $CURRENT_FG " ''${branch}"
+        branch=$(git symbolic-ref --short HEAD 2>/dev/null) || return
+        prompt_segment green $CURRENT_FG " ${branch}"
       }
 
       PROMPT=$'\n'"$PROMPT"
-      '';
-    
+    '';
   };
 
-  # Let Home Manager install and manage itself.
+  # Let Home Manager manage itself
   programs.home-manager.enable = true;
 }
